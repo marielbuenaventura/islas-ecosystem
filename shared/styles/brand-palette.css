@@ -1,0 +1,23 @@
+:root {
+  --ink: #1a1410;
+  --forest: #2d1f18;
+  --forest-mid: #4a3425;
+  --gold: #d4a574;
+  --gold-light: #e8b88a;
+  --cream: #f5f1ea;
+  --mist: #a89878;
+}
+
+body {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--gold-light);
+}
