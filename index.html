@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Islas Tech — The back-office operating system for small business operators</title>
+  <meta name="description" content="Built by operators, for operators. Islas Tech codifies eight years of SME operational grit into agentic AI. Apply for the 100-Operator Data Sprint.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1614;
+      --forest: #122e28;
+      --forest-mid: #1a4f47;
+      --gold: #c8973e;
+      --gold-light: #e4b86a;
+      --gold-dim: rgba(200,151,62,0.15);
+      --cream: #f5f1ea;
+      --mist: #8fa8a2;
+      --mist-dim: rgba(143,168,162,0.4);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--ink); color: var(--cream); overflow-x: hidden; }
+    body::after {
+      content: ''; position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999;
+    }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 22px 52px; transition: all 0.4s; }
+    nav.scrolled { background: rgba(10,22,20,0.94); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gold-dim); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; letter-spacing: 0.1em; color: var(--cream); text-decoration: none; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-link { font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mist); text-decoration: none; transition: color 0.2s; }
+    .nav-link:hover { color: var(--gold); }
+    .nav-cta { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); background: var(--gold); padding: 10px 20px; border-radius: 2px; text-decoration: none; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 160px 52px 100px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 100% 80% at 30% 60%, rgba(26,79,71,0.5) 0%, var(--ink) 65%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(200,151,62,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,151,62,0.04) 1px, transparent 1px); background-size: 72px 72px; mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3) 40%, transparent); }
+    .hero-content { position: relative; z-index: 2; max-width: 920px; }
+    .status-pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 18px; border: 1px solid var(--gold-dim); border-radius: 100px; font-size: 11px; font-weight: 500; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; margin-bottom: 28px; opacity: 0; animation: fadeUp 0.7s 0.2s forwards; }
+    .status-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 12px var(--gold); animation: pulse 2.5s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--gold); } 50% { opacity: 0.5; box-shadow: 0 0 4px var(--gold); } }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(46px, 6.5vw, 84px); font-weight: 300; line-height: 1.05; color: var(--cream); margin-bottom: 28px; opacity: 0; animation: fadeUp 0.9s 0.4s forwards; }
+    .hero h1 em { font-style: italic; color: var(--gold-light); }
+    .hero-sub { font-size: 19px; font-weight: 300; color: var(--mist); max-width: 660px; line-height: 1.65; margin-bottom: 40px; opacity: 0; animation: fadeUp 0.9s 0.6s forwards; }
+    .hero-sub strong { color: var(--cream); font-weight: 400; }
+    .hero-actions { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s 0.8s forwards; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--gold); color: var(--ink); font-size: 14px; font-weight: 500; letter-spacing: 0.04em; padding: 16px 32px; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 12px 40px rgba(200,151,62,0.35); }
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(4px); }
+    .btn-text { display: inline-flex; align-items: center; gap: 8px; color: var(--cream); font-size: 14px; font-weight: 400; text-decoration: none; border-bottom: 1px solid var(--gold-dim); padding-bottom: 4px; transition: all 0.2s; }
+    .btn-text:hover { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* SECTION SHARED */
+    .section-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 52px); font-weight: 300; line-height: 1.1; color: var(--cream); margin-bottom: 24px; }
+    h2 em { font-style: italic; color: var(--gold-light); }
+
+    /* TESTIMONY SECTION */
+    .testimony-section { background: var(--forest); padding: 120px 52px; }
+    .testimony-inner { max-width: 880px; margin: 0 auto; }
+    .testimony-inner p { font-size: 18px; font-weight: 300; line-height: 1.82; color: var(--mist); margin-bottom: 20px; }
+    .testimony-inner p strong { color: var(--cream); font-weight: 400; }
+    .pull-quote { border-left: 2px solid var(--gold); padding: 22px 28px; margin: 36px 0; background: rgba(200,151,62,0.04); }
+    .pull-quote p { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 300; font-style: italic; color: var(--cream); line-height: 1.5; margin: 0; }
+    .testimony-link { margin-top: 32px; }
+
+    /* PROBLEM SECTION */
+    .problem-section { padding: 120px 52px; max-width: 1200px; margin: 0 auto; }
+    .problem-intro { max-width: 720px; margin-bottom: 56px; }
+    .problem-intro p { font-size: 18px; font-weight: 300; line-height: 1.7; color: var(--mist); }
+    .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .problem-card { background: rgba(255,255,255,0.02); padding: 36px 32px; border-top: 2px solid transparent; transition: all 0.3s; }
+    .problem-card:hover { border-top-color: var(--gold); background: rgba(200,151,62,0.04); }
+    .problem-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-style: italic; color: var(--gold); margin-bottom: 12px; line-height: 1; }
+    .problem-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--cream); margin-bottom: 12px; line-height: 1.3; }
+    .problem-card p { font-size: 14px; font-weight: 300; color: var(--mist); line-height: 1.7; }
+
+    /* SOLUTION SECTION */
+    .solution-section { background: var(--forest); padding: 120px 52px; }
+    .solution-inner { max-width: 1200px; margin: 0 auto; }
+    .solution-intro { max-width: 720px; margin-bottom: 56px; }
+    .solution-intro p { font-size: 18px; font-weight: 300; line-height: 1.7; color: var(--mist); }
+    .solution-intro strong { color: var(--cream); font-weight: 400; }
+    .solution-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .solution-card { background: rgba(10,22,20,0.7); padding: 36px 32px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+    .solution-card:hover { border-bottom-color: var(--gold); background: rgba(10,22,20,0.95); }
+    .solution-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--cream); margin-bottom: 12px; line-height: 1.3; }
+    .solution-card p { font-size: 14px; font-weight: 300; color: var(--mist); line-height: 1.7; }
+
+    /* DATA SPRINT SECTION */
+    .sprint-section { padding: 120px 52px; max-width: 1200px; margin: 0 auto; }
+    .sprint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .sprint-text p { font-size: 17px; font-weight: 300; line-height: 1.82; color: var(--mist); margin-bottom: 18px; }
+    .sprint-text strong { color: var(--cream); font-weight: 400; }
+    .sprint-stages { display: flex; flex-direction: column; gap: 2px; }
+    .sprint-stage { padding: 24px 28px; background: rgba(255,255,255,0.02); border-left: 2px solid transparent; transition: all 0.3s; }
+    .sprint-stage:hover { border-left-color: var(--gold); background: rgba(200,151,62,0.04); }
+    .sprint-stage-num { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .sprint-stage h4 { font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 6px; }
+    .sprint-stage p { font-size: 13px; font-weight: 300; color: var(--mist); line-height: 1.6; }
+
+    /* CO-FOUNDERS COMPACT */
+    .founders-compact { background: var(--ink); padding: 120px 52px; border-top: 1px solid var(--gold-dim); }
+    .founders-compact-inner { max-width: 1100px; margin: 0 auto; }
+    .founders-compact-header { max-width: 720px; margin-bottom: 56px; }
+    .founders-compact-header p { font-size: 17px; font-weight: 300; line-height: 1.7; color: var(--mist); margin-top: 16px; }
+    .founders-compact-header strong { color: var(--cream); font-weight: 400; }
+    .founders-compact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .founder-row { display: grid; grid-template-columns: 100px 1fr; gap: 24px; align-items: start; }
+    .founder-avatar { width: 100px; height: 100px; border-radius: 50%; overflow: hidden; border: 1px solid var(--gold-dim); }
+    .founder-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .founder-info-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--cream); line-height: 1.2; margin-bottom: 4px; }
+    .founder-info-role { font-size: 11px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .founder-info-bio { font-size: 14px; font-weight: 300; line-height: 1.7; color: var(--mist); }
+    .founder-info-bio strong { color: var(--cream); font-weight: 400; }
+
+    /* APPLY CTA */
+    .apply-section { background: var(--forest); padding: 120px 52px; text-align: center; border-top: 1px solid var(--gold-dim); }    .apply-inner { max-width: 680px; margin: 0 auto; }
+    .apply-section h2 { font-size: clamp(36px, 4vw, 56px); margin-bottom: 24px; }
+    .apply-section > .apply-inner > p { font-size: 18px; font-weight: 300; color: var(--mist); line-height: 1.75; margin-bottom: 16px; }
+    .apply-section .tagline { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-style: italic; color: var(--gold-light); margin: 28px 0 40px; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid var(--gold-dim); padding: 48px 52px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--cream); letter-spacing: 0.08em; }
+    .footer-logo span { color: var(--gold); }
+    footer p { font-size: 12px; color: var(--mist); }
+    .footer-meta { display: flex; gap: 24px; align-items: center; }
+    .footer-meta a { font-size: 12px; color: var(--mist); text-decoration: none; transition: color 0.2s; }
+    .footer-meta a:hover { color: var(--gold); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links .nav-link { display: none; }
+      .hero { padding: 120px 24px 80px; }
+      .hero-actions { gap: 16px; }
+      .testimony-section { padding: 80px 24px; }
+      .problem-section { padding: 80px 24px; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .solution-section { padding: 80px 24px; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .sprint-section { padding: 80px 24px; }
+      .sprint-grid { grid-template-columns: 1fr; gap: 48px; }
+      .founders-compact { padding: 80px 24px; }
+      .founders-compact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .founder-row { grid-template-columns: 80px 1fr; gap: 20px; }
+      .founder-avatar { width: 80px; height: 80px; }
+      .apply-section { padding: 80px 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">ISLAS<span>.</span>TECH</a>
+    <div class="nav-links">
+      <a href="about.html" class="nav-link">Our Story</a>
+      <a href="#problem" class="nav-link">Problem</a>
+      <a href="#sprint" class="nav-link">Data Sprint</a>
+      <a href="https://calendly.com/mariel-islastech" class="nav-cta">Apply Now</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="status-pill">
+        <span class="dot"></span>
+        <span>100-Operator Data Sprint — Cohort 1 Now Open</span>
+      </div>
+      <h1>The back-office operating system <em>for small business operators.</em></h1>
+      <p class="hero-sub"><strong>Built by operators, for operators.</strong> Islas Tech is not just a management tool — it is the intelligence layer that codifies eight years of SME operational grit into an agentic AI workflow.</p>
+      <div class="hero-actions">
+        <a href="https://calendly.com/mariel-islastech" class="btn-primary">
+          Apply for the Operator Data Sprint
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="about.html" class="btn-text">Read the founding story →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONY -->
+  <section class="testimony-section">
+    <div class="testimony-inner">
+      <div class="section-tag">From Mariel — The Founding Story</div>
+      <h2>I was <em>drowning.</em></h2>
+      <p>For eight years I co-ran iSLAS Filipino BBQ & Bar in Toronto with my husband Marc — starting at 1690 Queen Street West in December 2017, then opening a second location at 890 Wilson Ave in December 2024. Two locations. 20+ staff. Mid-to-high six-figure revenue. We survived COVID as a two-person team and earned recognition from BlogTO, Foodism, Toronto Life, and the Philippine Consulate. We hosted three annual Night Market events starting in summer 2022, each with 30–60 vendors.</p>
+      <p><strong>And every day, I was drowning.</strong></p>
+      <div class="pull-quote">
+        <p>"At 11 PM, after 16 hours on my feet, I sat with seven spreadsheets open trying to reconcile what the POS said, what the bank said, what Uber said, what the cash drawer said — and I could not answer the simplest question: did we make profit today?"</p>
+      </div>
+      <p>Eight different platforms. POS, delivery apps, email, spreadsheets, accounting software, bank apps, calendars, supplier portals. None of them talked to each other. Permits arrived as surprises. Maintenance broke before warnings reached me. People said: <em>"You should delegate."</em> But hiring a manager costs $60K. A bookkeeper, $2–5K a month. <strong>For a small operator, that is not delegation. That is bankruptcy.</strong></p>
+      <p>I have a finance background — SAP FI/CO at Accenture, accounting at Daniels, finance at Scotiabank. <strong>And I was still drowning.</strong> Which means the problem is not operator incompetence. The problem is systemic fragmentation. <strong>Capital does not fix this. Foundation does.</strong></p>
+      <p>In late 2025 we paused operations. I traveled through the Philippines and Japan to reflect. I enrolled in the <strong>Rotman Executive Program in Generative & Agentic AI for Business</strong>. I incorporated Islas Tech (legally: 1001561700 Ontario Inc.) to formalize this work. <strong>The next business I am building is the system that fixes the operating dilemma I lived.</strong></p>
+      <div class="testimony-link">
+        <a href="about.html" class="btn-text">Read the full story →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem-section" id="problem">
+    <div class="section-tag">The Operator's Reality</div>
+    <h2>Drowning in <em>fragmentation.</em></h2>
+    <div class="problem-intro">
+      <p>If you operate a small business doing $300K–$5M in revenue in Canada, you are managing this every day:</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-num">i.</div>
+        <h3>Eight different platforms</h3>
+        <p>POS, delivery apps, email, spreadsheets, accounting software, bank apps, calendars, supplier portals — none of them talk to each other.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">ii.</div>
+        <h3>No real-time visibility</h3>
+        <p>You don't know your true cost until midnight in a spreadsheet, after a 16-hour day. Decisions made from anxiety, not clarity.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">iii.</div>
+        <h3>Surprise deadlines</h3>
+        <p>Permits, renewals, maintenance, filings — always a surprise, always a fine, always one more thing you couldn't see coming.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">iv.</div>
+        <h3>Trapped in operations</h3>
+        <p>16-hour days managing systems instead of growing the business. Innovation, scaling, and customers all wait.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">v.</div>
+        <h3>Can't afford to delegate</h3>
+        <p>A CFO costs more than your net profit. A controller is out of reach. So you do it all yourself — and slowly burn out.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">vi.</div>
+        <h3>Capital can't fix it</h3>
+        <p>Funding compounds fragmentation. The operators who fail with capital are the ones who scale revenue without scaling foundation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION -->
+  <section class="solution-section">
+    <div class="solution-inner">
+      <div class="section-tag">The Answer</div>
+      <h2>A digital back office <em>built for reality.</em></h2>
+      <div class="solution-intro">
+        <p>Islas Tech is not an AI chatbot. Not automation theater. Not generic founder advice. <strong>It is the back-office operating system you wish you'd had.</strong> An intelligence layer that codifies eight years of SME operational grit into an agentic workflow — built by operators who lived the alternative.</p>
+      </div>
+      <div class="solution-grid">
+        <div class="solution-card">
+          <h3>Know your numbers</h3>
+          <p>Daily cost. Daily margin. Daily profit. In real time. Decisions from clarity, not midnight anxiety.</p>
+        </div>
+        <div class="solution-card">
+          <h3>Never miss a deadline</h3>
+          <p>Permits, renewals, maintenance, filings — visible on a schedule, automated, ahead of time. Sleep without compliance dread.</p>
+        </div>
+        <div class="solution-card">
+          <h3>One signal, not eight</h3>
+          <p>Centralize fragmentation. One dashboard for orders, feedback, schedules, suppliers. Stop context-switching across platforms.</p>
+        </div>
+        <div class="solution-card">
+          <h3>Understand your cost</h3>
+          <p>Real cost per hour, per dish, per service, per supplier. See exactly where money leaks before it becomes the problem.</p>
+        </div>
+        <div class="solution-card">
+          <h3>See growth patterns</h3>
+          <p>Which products are profitable, which times are strong, which changes worked. Double down on what's earning, cut what isn't.</p>
+        </div>
+        <div class="solution-card">
+          <h3>Focus on what matters</h3>
+          <p>Customers. Innovation. Scaling. Growth. With your back office handled, the time and headspace come back.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DATA SPRINT (Research Methodology) -->
+  <section class="sprint-section" id="sprint">
+    <div class="section-tag">Research Methodology</div>
+    <h2>The 100-Operator <em>Data Sprint.</em></h2>
+    <div class="sprint-grid" style="margin-top: 48px;">
+      <div class="sprint-text">
+        <p><strong>Cohort 1 is now open.</strong> One hundred structured one-on-one sessions with immigrant small business operators in the Greater Toronto Area — generating the proprietary research dataset that becomes the foundation of the Islas Tech back-office operating system.</p>
+        <p>Each 30-minute session is anonymized, structured, and integrated into the Islas AI training corpus. The methodology is grounded in the <strong>Rotman Executive Program in Generative & Agentic AI for Business</strong>, applied to real Canadian SME operating conditions.</p>
+        <p>Each session is both an outcome for the operator (a clarity diagnostic and prioritized action sequence) and a data point for the system (structured operator decision-making patterns under real fragmentation).</p>
+        <p><strong>This is research-grade methodology, not a sales funnel.</strong> It is how we build the proprietary Operator Logic dataset that no competitor can replicate — because it comes from lived experience, not scraped content.</p>
+      </div>
+      <div class="sprint-stages">
+        <div class="sprint-stage">
+          <div class="sprint-stage-num">Stage 01</div>
+          <h4>Apply & Intake</h4>
+          <p>A short structured intake on stage, industry, and biggest friction point. 5 minutes.</p>
+        </div>
+        <div class="sprint-stage">
+          <div class="sprint-stage-num">Stage 02</div>
+          <h4>30-Minute Diagnostic Session</h4>
+          <p>Live session with Mariel, structured around the Islas operator-diagnostic framework.</p>
+        </div>
+        <div class="sprint-stage">
+          <div class="sprint-stage-num">Stage 03</div>
+          <h4>Walk Away With a Roadmap</h4>
+          <p>Concrete prioritized action plan, sequenced for your specific situation. Delivered same session.</p>
+        </div>
+        <div class="sprint-stage">
+          <div class="sprint-stage-num">Stage 04</div>
+          <h4>Your Session Trains the AI</h4>
+          <p>With consent, anonymized insights structure the Islas AI training corpus — building the proprietary Operator Logic dataset.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CO-FOUNDERS -->
+  <section class="founders-compact">
+    <div class="founders-compact-inner">
+      <div class="founders-compact-header">
+        <div class="section-tag">The Co-Founders</div>
+        <h2>Two operators. <em>One system.</em></h2>
+        <p><strong>Built by the two people who lived it.</strong> Mariel led the back office. Marc led the floor. Together they ran iSLAS Filipino BBQ & Bar from 2017 to 2025 — and turned eight years of operational friction into the foundation of Islas Tech.</p>
+      </div>
+      <div class="founders-compact-grid">
+        <div class="founder-row">
+          <div class="founder-avatar">
+            <img src="mariel.png" alt="Mariel Buenaventura" onerror="this.style.display='none'; this.parentElement.innerHTML+='<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" style=\"position:absolute;inset:0;width:100%;height:100%\"><rect fill=\"%23122e28\" width=\"100\" height=\"100\"/><text x=\"50\" y=\"50\" font-size=\"30\" font-family=\"Cormorant Garamond,serif\" fill=\"%23c8973e\" text-anchor=\"middle\" dominant-baseline=\"central\" font-weight=\"300\">MB</text></svg>'">
+          </div>
+          <div>
+            <div class="founder-info-name">Mariel Buenaventura</div>
+            <div class="founder-info-role">Co-Founder & CEO</div>
+            <p class="founder-info-bio"><strong>The operator who lived the back office.</strong> 15+ years finance and operations across Accenture, Scotiabank, and Daniels Corp. CPA Ontario candidate (PREP). Completed Rotman Executive Program in Generative & Agentic AI for Business (May 2026). Leads product, research methodology, and the 100-Operator Data Sprint.</p>
+          </div>
+        </div>
+        <div class="founder-row">
+          <div class="founder-avatar">
+            <img src="marc.png" alt="Chef Marc Buenaventura" onerror="this.style.display='none'; this.parentElement.innerHTML+='<svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" style=\"position:absolute;inset:0;width:100%;height:100%\"><rect fill=\"%23122e28\" width=\"100\" height=\"100\"/><text x=\"50\" y=\"50\" font-size=\"30\" font-family=\"Cormorant Garamond,serif\" fill=\"%23c8973e\" text-anchor=\"middle\" dominant-baseline=\"central\" font-weight=\"300\">MB</text></svg>'">
+          </div>
+          <div>
+            <div class="founder-info-name">Chef Marc Buenaventura</div>
+            <div class="founder-info-role">Co-Founder · Operator-in-Residence</div>
+            <p class="founder-info-bio"><strong>The operator who lived the floor.</strong> Eight years running iSLAS — kitchen, vendors, staff, customers. Featured in BlogTO, Foodism, Toronto Life. Recognized by the Philippine Consulate during Filipino Restaurant Month 2022 & 2025. Grounds the system in real operating reality.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLY CTA -->
+  <section class="apply-section">
+    <div class="apply-inner">
+      <div class="section-tag" style="justify-content:center;">Get Started</div>
+      <h2>Apply for the <em>Operator Data Sprint.</em></h2>
+      <p>A structured 30-minute diagnostic with Mariel. You walk in drowning. You walk out with clarity — a real plan for your real numbers, your real systems, your real next 90 days.</p>
+      <div class="tagline">No commitment. One session. Real clarity.</div>
+      <a href="https://calendly.com/mariel-islastech" class="btn-primary">
+        Apply Now
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM -->
+  <section class="ecosystem-section">
+    <div class="ecosystem-inner">
+      <p>Connected projects:</p>
+      <div class="ecosystem-links">
+        <a href="https://marcbuen.com" class="ecosystem-link">Chef Marc</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">ISLAS<span>.</span>TECH</div>
+    <div class="footer-meta">
+      <a href="about.html">Our Story</a>
+      <a href="#sprint">Data Sprint</a>
+      <a href="mailto:mariel@islastech.tech">Contact</a>
+    </div>
+    <p>© 2026 Islas Tech · 1001561700 Ontario Inc. · Toronto, Canada</p>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  </script>
+
+</body>
+</html>
